@@ -4,8 +4,8 @@ import ReCAPTCHA from "./recaptcha";
 import makeAsyncScriptLoader from "react-async-script";
 
 export default class Wrapper extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
@@ -25,8 +25,26 @@ export default class Wrapper extends React.Component {
     });
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (this.props.hl !== nextProps.hl) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   render() {
-    return <div>{this.renderRecaptcha()}</div>;
+    const RecatpchaComponent = this.renderRecaptcha();
+    const {
+      // eslint-disable-next-line no-unused-vars
+      callbackName,
+      // eslint-disable-next-line no-unused-vars
+      globalName,
+      // eslint-disable-next-line no-unused-vars
+      hl,
+      ...childProps
+    } = this.props;
+    return React.createElement(RecatpchaComponent, childProps);
   }
 }
 
